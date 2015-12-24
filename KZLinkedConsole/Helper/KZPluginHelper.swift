@@ -37,6 +37,23 @@ class KZPluginHelper: NSObject {
 
         return nil
     }
+    
+    static var file_path_cache = [String:[String:String]]()
+    static func findFileInWorkspace(workspacePath: String, fileName: String) -> String? {
+        var filePathMap = file_path_cache[workspacePath] ?? [:]
+        
+        var filePath: String? = filePathMap[fileName]
+        
+        if filePath == nil {
+            if let shellResult = runShellCommand("find '\(workspacePath)' -name '\(fileName)' | head -n 1") {
+                filePath = shellResult
+                filePathMap[fileName] = shellResult
+                file_path_cache[workspacePath] = filePathMap
+            }
+        }
+        
+        return filePath
+    }
 }
 
 //! MARK: Accessing private API
