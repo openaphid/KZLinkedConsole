@@ -41,7 +41,8 @@ class KZLinkedConsole: NSObject {
         }
         consoleTextView.linkTextAttributes = [
             NSCursorAttributeName: NSCursor.pointingHandCursor(),
-            NSUnderlineStyleAttributeName: NSUnderlineStyle.StyleSingle.rawValue
+            NSUnderlineStyleAttributeName: NSUnderlineStyle.StyleSingle.rawValue,
+            NSForegroundColorAttributeName: NSColor.grayColor()
         ]
         textStorage.kz_isUsedInXcodeConsole = true
     }
