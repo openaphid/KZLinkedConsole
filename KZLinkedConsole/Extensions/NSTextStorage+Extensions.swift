@@ -40,21 +40,29 @@ extension NSTextStorage {
         let text = string as NSString
 
         let matches = pattern.matchesInString(string, options: .ReportProgress, range: editedRange)
-        for result in matches where result.numberOfRanges == 5 {
+        for result in matches where result.numberOfRanges == 4 {
+            /*
             let fullRange = result.rangeAtIndex(0)
             let fileNameRange = result.rangeAtIndex(1)
             let maybeParensRange = result.rangeAtIndex(3)
             let lineRange = result.rangeAtIndex(4)
-
+            */
+            
+            let fullRange = result.rangeAtIndex(0)
+            let fileNameRange = result.rangeAtIndex(2)
+            let lineRange = result.rangeAtIndex(3)
+            
+            /*
             let ext: String
             if maybeParensRange.location == NSNotFound {
-                let extensionRange = result.rangeAtIndex(2)
-                ext = text.substringWithRange(extensionRange)
+            let extensionRange = result.rangeAtIndex(2)
+            ext = text.substringWithRange(extensionRange)
             } else {
-                ext = "swift"
+            ext = "swift"
             }
-            let fileName = "\(text.substringWithRange(fileNameRange)).\(ext)"
-
+            */
+            let fileName = "\(text.substringWithRange(fileNameRange))"
+            
             addAttribute(NSLinkAttributeName, value: "", range: fullRange)
             addAttribute(KZLinkedConsole.Strings.linkedFileName, value: fileName, range: fullRange)
             addAttribute(KZLinkedConsole.Strings.linkedLine, value: text.substringWithRange(lineRange), range: fullRange)
@@ -67,6 +75,9 @@ extension NSTextStorage {
         //
         // (If this gets any more complicated there will need to be a formal way to walk through multiple
         // patterns and check if each one matches.)
-        return try! NSRegularExpression(pattern: "([\\w\\+]+)\\.(\\w+)(\\(\\))?:(\\d+)", options: .CaseInsensitive)
+        //let regex = "([\\*][^:\n\r]+:[[:digit:]]+)"
+        let regex = "(\\*)([^:\n\r]+):(\\d+)"
+        _ = "([\\w\\+]+)\\.(\\w+)(\\(\\))?:(\\d+)"
+        return try! NSRegularExpression(pattern: regex, options: .CaseInsensitive)
     }
 }
